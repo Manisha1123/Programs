@@ -1,0 +1,58 @@
+def print_board(board):
+    for row in board:
+        print(" | ".join(row))
+        print("-" * 5)
+
+def check_winner(board):
+    for row in board:
+        if row[0] == row[1] == row[2] and row[0] != " ":
+            return True
+
+    for col in range(3):
+        if board[0][col] == board[1][col] == board[2][col] and board[0][col] != " ":
+            return True
+
+    if board[0][0] == board[1][1] == board[2][2] and board[0][0] != " ":
+        return True
+    if board[0][2] == board[1][1] == board[2][0] and board[0][2] != " ":
+        return True
+
+    return False
+
+def tic_tac_toe():
+    board = [[" "]*3 for _ in range(3)]
+    player = "X"
+
+    for _ in range(9):
+        print_board(board)
+
+        while True:
+            try:
+                # Get user input and split it
+                user_input = input(f"Player {player}, enter row and column (0-2): ").strip()
+                row, col = map(int, user_input.split())
+
+                # Check if input is valid
+                if row not in range(3) or col not in range(3):
+                    raise ValueError("Row and column must be between 0 and 2.")
+                if board[row][col] != " ":
+                    raise ValueError("Cell already occupied. Try again.")
+                break  # Exit loop if input is valid
+
+            except ValueError as e:
+                print(f"Invalid input: {e}. Please enter two numbers separated by a space (e.g., '1 2').")
+            except Exception:
+                print("Invalid format! Please enter two numbers separated by a space (e.g., '1 2').")
+
+        board[row][col] = player
+        if check_winner(board):
+            print_board(board)
+            print(f"Player {player} wins!")
+            return
+
+        player = "O" if player == "X" else "X"
+
+    print_board(board)
+    print("It's a draw!")
+
+tic_tac_toe()
