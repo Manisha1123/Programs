@@ -1,0 +1,21 @@
+from itertools import cycle
+
+def generate_spiral_matrix(n):
+    matrix = [[0] * n for _ in range(n)]
+    directions = cycle([(0, 1), (1, 0), (0, -1), (-1, 0)])  # Right, Down, Left, Up
+    row, col, direction = 0, 0, next(directions)
+
+    for num in range(1, n * n + 1):
+        matrix[row][col] = num
+        next_row, next_col = row + direction[0], col + direction[1]
+
+        if not (0 <= next_row < n and 0 <= next_col < n and matrix[next_row][next_col] == 0):
+            direction = next(directions)  # Change direction
+            next_row, next_col = row + direction[0], col + direction[1]
+
+        row, col = next_row, next_col
+
+    return matrix
+n = 4
+for row in generate_spiral_matrix(n):
+    print(*row)
